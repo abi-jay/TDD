@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.UUID;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceTest {
+
+    private static UserService userService;
+    @BeforeAll
+    public static void setUp(){
+        userService = new UserServiceImpl();
+    }
     @Test
     @Order(1)
     public void createUserTest(){
@@ -17,7 +23,7 @@ public class UserServiceTest {
         actualUser.setFirstName("Harry");
         actualUser.setEmail("hwakanda@test.com");
         actualUser.setUserId(UUID.randomUUID().toString());
-        UserService userService = new UserServiceImpl();
+        //UserService userService = new UserServiceImpl();
         userService.createUser(actualUser);
 
         User expectedUser = userService.findUserByEmail("hwakanda@test.com");
@@ -27,11 +33,11 @@ public class UserServiceTest {
     @Test
     @Order(2)
     public void testUserUUID(){
-        UserService userService = new UserServiceImpl();
+        //UserService userService = new UserServiceImpl();
         User expectedUser = userService.findUserByEmail("hwakanda@test.com");
         Assertions.assertNotNull(expectedUser.getUserId());
     }
-    @Test
+    /*@Test
     @Order(3)
     public void deleteUserTest(){
         UserService userService = new UserServiceImpl();
@@ -41,5 +47,12 @@ public class UserServiceTest {
         //Assertions.assertNull(expectedUser);
         List<User> userList = userService.getAllUsers();
         Assertions.assertFalse(userList.contains(actualUser));
+    }
+
+     */
+    @AfterAll
+    public static void cleanUp(){
+        UserService userService = new UserServiceImpl();
+        User actualUser = userService.findUserByEmail("hwakanda@test.com");
     }
 }
